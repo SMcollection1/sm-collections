@@ -5,65 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Product Details - SM Collections</title>
   <style>
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f8f9fa;
-    }
-    .container {
-      max-width: 900px;
-      margin: 2rem auto;
-      background: white;
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-    }
-    img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 1rem;
-    }
-    h1 {
-      color: #667eea;
-      margin-bottom: 0.5rem;
-    }
-    p {
-      color: #555;
-      line-height: 1.6;
-    }
-    .price {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #222;
-      margin: 1rem 0;
-    }
-    .btn {
-      display: inline-block;
-      background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-      color: white;
-      text-decoration: none;
-      padding: 1rem 2rem;
-      border-radius: 50px;
-      font-weight: bold;
-      transition: opacity 0.3s;
-    }
-    .btn:hover {
-      opacity: 0.9;
-    }
-    .back {
-      display: inline-block;
-      margin-top: 1rem;
-      text-decoration: none;
-      color: #667eea;
-      font-weight: 600;
-    }
+    body { font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif; margin:0; padding:0; background:#f8f9fa; }
+    .container { max-width:900px; margin:2rem auto; background:white; padding:2rem; border-radius:15px; box-shadow:0 5px 25px rgba(0,0,0,0.1); }
+    img { width:100%; border-radius:10px; margin-bottom:1rem; }
+    h1 { color:#667eea; margin-bottom:0.5rem; }
+    p { color:#555; line-height:1.6; }
+    .price { font-size:1.3rem; font-weight:bold; color:#222; margin:1rem 0; }
+    .btn { display:inline-block; background:linear-gradient(135deg,#25d366 0%,#128c7e 100%); color:white; text-decoration:none; padding:1rem 2rem; border-radius:50px; font-weight:bold; transition:opacity 0.3s; }
+    .btn:hover { opacity:0.9; }
+    .back { display:inline-block; margin-top:1rem; text-decoration:none; color:#667eea; font-weight:600; }
   </style>
 </head>
 <body>
-  <div class="container" id="product-detail">
-    <p>Loading product...</p>
-  </div>
+  <div class="container" id="product-detail"><p>Loading product...</p></div>
 
   <script>
     async function loadProduct() {
@@ -75,12 +29,9 @@
       }
 
       try {
-        // ✅ Fetch from GitHub repo (ensure branch main)
-        const res = await fetch(`https://api.github.com/repos/SMcollection1/sm-collections/contents/products/${fileName}?ref=main`);
-        const data = await res.json();
-        const text = await fetch(data.download_url).then(r => r.text());
+        const url = `/products/${fileName}`;
+        const text = await fetch(url).then(r => r.text());
 
-        // ✅ Extract product info from YAML frontmatter
         const title = text.match(/title:\s*(.*)/)?.[1] || "Product";
         const description = text.match(/description:\s*(.*)/)?.[1] || "";
         const price = text.match(/price:\s*(.*)/)?.[1] || "";
@@ -96,10 +47,11 @@
           <br><a href="index.html" class="back">⬅ Back to Store</a>
         `;
       } catch (err) {
-        document.getElementById("product-detail").innerHTML = "<p style='color:red;'>⚠️ Error loading product. Check GitHub file or repo visibility.</p>";
-        console.error("Product loading failed:", err);
+        document.getElementById("product-detail").innerHTML = "<p style='color:red;'>⚠️ Error loading product. Check file.</p>";
+        console.error(err);
       }
     }
+
     loadProduct();
   </script>
 </body>
