@@ -22,16 +22,17 @@
   <script>
     async function loadProduct() {
       const params = new URLSearchParams(window.location.search);
-      const fileName = params.get("file");
+      const fileName = params.get("file");  // get filename from query
       if (!fileName) {
         document.getElementById("product-detail").innerHTML = "<p>No product selected.</p>";
         return;
       }
 
       try {
-        const url = `/products/${fileName}`;
+        const url = `/products/${fileName}`;  // relative path
         const text = await fetch(url).then(r => r.text());
 
+        // Parse YAML frontmatter
         const title = text.match(/title:\s*(.*)/)?.[1] || "Product";
         const description = text.match(/description:\s*(.*)/)?.[1] || "";
         const price = text.match(/price:\s*(.*)/)?.[1] || "";
