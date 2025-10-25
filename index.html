@@ -23,6 +23,7 @@
   </main>
 
   <script>
+    // ✅ List all products (relative path)
     const products = [
       "/products/test.md",
       "/products/product1.md"
@@ -36,6 +37,8 @@
         grid.innerHTML = "";
         for (const url of products) {
           const text = await fetch(url).then(r => r.text());
+
+          // Extract product info from YAML
           const title = text.match(/title:\s*(.*)/)?.[1] || "Product";
           const description = text.match(/description:\s*(.*)/)?.[1] || "";
           const price = text.match(/price:\s*(.*)/)?.[1] || "";
@@ -53,25 +56,4 @@
             </a>
             <div style="margin-top:1rem;display:flex;gap:10px;justify-content:center;">
               <button class="category-btn" onclick="addToCart('${title}','${price}','${image}')">🛒 Add to Cart</button>
-              <a href="${whatsapp}" target="_blank" class="category-btn" style="background:#25d366;">💬 WhatsApp</a>
-            </div>
-          `;
-          grid.appendChild(card);
-        }
-      } catch (err) {
-        grid.innerHTML = "<p style='color:red;'>⚠️ Error loading products. Check files.</p>";
-        console.error(err);
-      }
-    }
-
-    function addToCart(title, price, image) {
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      cart.push({ title, price, image });
-      localStorage.setItem("cart", JSON.stringify(cart));
-      alert(`${title} added to cart! 🛍`);
-    }
-
-    loadProducts();
-  </script>
-</body>
-</html>
+              <a href="${whatsapp}" target
