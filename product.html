@@ -75,10 +75,12 @@
       }
 
       try {
-        const res = await fetch(`https://api.github.com/repos/SMcollection1/sm-collections/contents/products/${fileName}`);
+        // ✅ Fetch from GitHub repo (ensure branch main)
+        const res = await fetch(`https://api.github.com/repos/SMcollection1/sm-collections/contents/products/${fileName}?ref=main`);
         const data = await res.json();
         const text = await fetch(data.download_url).then(r => r.text());
 
+        // ✅ Extract product info from YAML frontmatter
         const title = text.match(/title:\s*(.*)/)?.[1] || "Product";
         const description = text.match(/description:\s*(.*)/)?.[1] || "";
         const price = text.match(/price:\s*(.*)/)?.[1] || "";
@@ -94,8 +96,8 @@
           <br><a href="index.html" class="back">⬅ Back to Store</a>
         `;
       } catch (err) {
-        document.getElementById("product-detail").innerHTML = "<p>Error loading product.</p>";
-        console.error(err);
+        document.getElementById("product-detail").innerHTML = "<p style='color:red;'>⚠️ Error loading product. Check GitHub file or repo visibility.</p>";
+        console.error("Product loading failed:", err);
       }
     }
     loadProduct();
